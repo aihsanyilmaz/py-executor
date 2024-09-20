@@ -5,7 +5,7 @@ This project provides an infrastructure for running automation tests using a Fla
 For the Turkish version of this documentation, please see [README_TR.md](README_TR.md).
 
 ## Project Structure
-
+```
 selenium-service/
 │
 ├── flask/ # Flask application
@@ -16,8 +16,7 @@ selenium-service/
 │ └── README.txt # Flask API usage guide
 ├── docker-compose.yml # Docker Compose configuration
 └── .env # Environment variables
-
-
+```
 
 ## Installation
 

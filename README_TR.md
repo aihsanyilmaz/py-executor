@@ -3,7 +3,7 @@
 Bu proje, Flask tabanlı bir API ve Selenium grid kullanarak otomasyon testleri çalıştırmak için bir altyapı sağlar.
 
 ## Proje Yapısı
-
+```
 selenium-service/
 │
 ├── flask/ # Flask uygulaması
@@ -15,7 +15,7 @@ selenium-service/
 │
 ├── docker-compose.yml # Docker Compose konfigürasyonu
 └── .env # Ortam değişkenleri
-
+```
 
 ## Kurulum
 
