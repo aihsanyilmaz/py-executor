@@ -14,9 +14,9 @@ selenium-service/
 │ ├── fatals.py # Error management module
 │ ├── packages/ # Executable Python scripts
 │ └── README.txt # Flask API usage guide
-│
 ├── docker-compose.yml # Docker Compose configuration
 └── .env # Environment variables
+
 
 
 ## Installation
@@ -29,7 +29,7 @@ selenium-service/
 
 2. Create the `.env` file and set the necessary variables:
    ```
-   cp .env.example .env
+   cp example.env .env
    ```
    Edit the `.env` file and enter the required values.
 
