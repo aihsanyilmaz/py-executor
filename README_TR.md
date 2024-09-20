@@ -27,7 +27,7 @@ selenium-service/
 
 2. `.env` dosyasını oluşturun ve gerekli değişkenleri ayarlayın:
    ```
-   cp .env.example .env
+   cp example.env .env
    ```
    `.env` dosyasını düzenleyerek gerekli değerleri girin.
 
