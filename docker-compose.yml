@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  flask:
+    build: ./flask
+    container_name: flask
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./flask:/app
+    env_file:
+      - .env
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+      - PUSHER_APP_ID=${PUSHER_APP_ID}
+      - PUSHER_KEY=${PUSHER_KEY}
+      - PUSHER_SECRET=${PUSHER_SECRET}
+      - PUSHER_CLUSTER=${PUSHER_CLUSTER}
+      - AUTH_HASH=${AUTH_HASH}
+    command: flask run --host=0.0.0.0
+
+  selenium-hub:
+    image: selenium/hub:4.1.0
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+
+  chrome:
+    image: selenium/node-chrome:4.1.0-20220208
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "${VNC_PORT_START:-5900}-${VNC_PORT_END:-5999}:5900"
+    deploy:
+      replicas: ${CHROME_NODES:-3}  # Varsayılan olarak 3 node, .env'de belirtilmemişse
