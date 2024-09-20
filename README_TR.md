@@ -1,6 +1,6 @@
 # Selenium Service
 
-Bu proje, Flask tabanlı bir API ve Selenium grid kullanarak otomasyon testleri çalıştırmak için bir altyapı sağlar.
+Bu proje, Flask tabanlı bir API ile Selenium Grid kullanarak otomasyon testleri çalıştırmak için altyapı sağlar. Hizmet bir Selenium Hub içerir ve Chrome tarayıcılarını destekler. [flask/packages/example.py](flask/packages/example.py) dosyasını inceleyerek kullanımınızı genişletebilirsiniz.
 
 ## Proje Yapısı
 ```

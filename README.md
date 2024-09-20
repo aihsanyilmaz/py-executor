@@ -1,6 +1,6 @@
 # Selenium Service
 
-This project provides an infrastructure for running automation tests using a Flask-based API and Selenium grid.
+This project provides an infrastructure for running automation tests using a Flask-based API and Selenium Grid. The service includes a Selenium Hub and supports Chrome browsers. You can extend your usage by examining the [flask/packages/example.py](flask/packages/example.py) file.
 
 For the Turkish version of this documentation, please see [README_TR.md](README_TR.md).
 
