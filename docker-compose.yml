@@ -1,33 +1,15 @@
 version: '3.8'
 
 services:
-  flask:
-    build: ./flask
-    container_name: flask
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./flask:/app
-    env_file:
-      - .env
-    environment:
-      - FLASK_ENV=development
-      - FLASK_APP=app.py
-      - PUSHER_APP_ID=${PUSHER_APP_ID}
-      - PUSHER_KEY=${PUSHER_KEY}
-      - PUSHER_SECRET=${PUSHER_SECRET}
-      - PUSHER_CLUSTER=${PUSHER_CLUSTER}
-      - AUTH_HASH=${AUTH_HASH}
-    command: flask run --host=0.0.0.0
 
   selenium-hub:
-    image: selenium/hub:4.1.0
+    image: selenium/hub:4.10.0
     container_name: selenium-hub
     ports:
       - "4444:4444"
 
   chrome:
-    image: selenium/node-chrome:4.1.0-20220208
+    image: selenium/node-chrome:4.10.0
     shm_size: 2gb
     depends_on:
       - selenium-hub
@@ -38,4 +20,15 @@ services:
     ports:
       - "${VNC_PORT_START:-5900}-${VNC_PORT_END:-5999}:5900"
     deploy:
-      replicas: ${CHROME_NODES:-3}  # Varsayılan olarak 3 node, .env'de belirtilmemişse
+      replicas: ${CHROME_NODES:-3}
+
+  app:
+    build: ./app
+    container_name: fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    env_file:
+      - .env
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload

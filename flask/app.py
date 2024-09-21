@@ -10,27 +10,25 @@ from pusher import Pusher
 from fatals import list_fatals, get_fatal_details, delete_fatal_error
 from run import run_function
 
-# .env dosyasını yükle
 load_dotenv()
 
 app = Flask(__name__)
+app.config['ENV'] = os.getenv('ENV', 'production')
 
-# Pusher konfigürasyonu
-app.pusher_client = None
-if all([os.getenv('PUSHER_APP_ID'), os.getenv('PUSHER_KEY'), 
-        os.getenv('PUSHER_SECRET'), os.getenv('PUSHER_CLUSTER')]):
+# Pusher Configuration
+if os.getenv('PUSHER', 'False').lower() == 'true':
     app.pusher_client = Pusher(
         app_id=os.getenv('PUSHER_APP_ID'),
         key=os.getenv('PUSHER_KEY'),
         secret=os.getenv('PUSHER_SECRET'),
-        cluster=os.getenv('PUSHER_CLUSTER'),
-        ssl=True
+        cluster=os.getenv('PUSHER_CLUSTER')
     )
     print("Pusher configured successfully.")
 else:
-    print("Pusher configuration is incomplete. Pusher is disabled.")
+    app.pusher_client = None
+    print("Pusher is disabled.")
 
-# Güvenlik anahtarı
+# Security Header Value
 AUTH_HASH = os.getenv('AUTH_HASH')
 
 def require_auth(f):
@@ -71,4 +69,6 @@ def delete_fatal(filename):
     return delete_fatal_error(filename)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    debugMode = app.config['ENV'] == 'development'
+    print(f"Debug mode: {debugMode}")
+    app.run(host='0.0.0.0', port=5000, debug=debugMode)
