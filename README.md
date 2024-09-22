@@ -4,8 +4,8 @@ Bu FastAPI tabanlı uygulama, dinamik Python kodu yürütme için asenkron bir A
 
 ## Temel Özellikler
 
-- Asenkron kod yürütme: `asyncio` kullanarak eşzamansız işlem yapabilme
-- Dinamik dosya yükleme: `files/` dizinindeki Python betiklerini çalıştırabilme
+- Asenkron kod yürütme
+- Genişletebilme: `files/` dizinindeki Python betiklerini çalıştırabilme
 - Gerçek zamanlı bildirimler: Pusher ile işlem durumu ve sonuçlarını anlık iletme
 - RESTful API: FastAPI ile hızlı ve modern bir API arayüzü
 - API Güvenliği: API anahtarı tabanlı kimlik doğrulama
@@ -20,17 +20,32 @@ Proje yapısı aşağıdaki gibidir:
 app/
 ├── files/
 │   └── example.py  # Örnek Python betiği
+├── modules/
+│   └── pusher.py
+├── __init__.py
 ├── main.py
 ├── dependencies.py
 ├── process.py
 ├── execution.log
+├── requirements.txt
 ├── Dockerfile
-└── README.md
+├── example.env
+├── .gitignore
+├── README.md
+└── LICENSE
 ```
 
 `files/` dizini, çalıştırılacak Python betiklerini içerir. `example.py` dosyası, API'nin nasıl kullanılacağını gösteren bir örnek betik olarak sunulmuştur.
 
 ## Kurulum ve Çalıştırma
+
+### Çevresel Değişkenlerin Ayarlanması
+
+1. `example.env` dosyasını `.env` olarak kopyalayın:
+   ```
+   cp example.env .env
+   ```
+2. `.env` dosyasını açın ve gerekli değişkenleri kendi değerlerinizle güncelleyin.
 
 ### Docker ile Kurulum
 
