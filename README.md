@@ -1,25 +1,25 @@
-# Asenkron Python Çalıştırıcı API
+# Asynchronous Python Executor API
 
-Bu FastAPI tabanlı uygulama, dinamik Python kodu yürütme için asenkron bir API sağlar. Uygulama, `files/` dizininde bulunan Python betiklerini çalıştırabilir ve sonuçları asenkron olarak işler. Gerçek zamanlı bildirimler için Pusher entegrasyonu kullanılmıştır, böylece uzun süren işlemlerin ilerlemesi ve sonuçları anında istemcilere iletilebilir.
+This FastAPI-based application provides an asynchronous API for executing dynamic Python code. The application can run Python scripts located in the `files/` directory and process the results asynchronously. Pusher integration is used for real-time notifications, allowing instant delivery of progress and results of long-running operations to clients.
 
-## Temel Özellikler
+## Key Features
 
-- Asenkron kod yürütme
-- Genişletebilme: `files/` dizinindeki Python betiklerini çalıştırabilme
-- Gerçek zamanlı bildirimler: Pusher ile işlem durumu ve sonuçlarını anlık iletme
-- RESTful API: FastAPI ile hızlı ve modern bir API arayüzü
-- API Güvenliği: API anahtarı tabanlı kimlik doğrulama
-- Yapılandırılabilir: Çevresel değişkenler ile esnek konfigürasyon
-- Docker desteği: Kolay dağıtım ve ölçeklendirme için Dockerfile içerir
+- Asynchronous code execution
+- Extensibility: Ability to run Python scripts from the `files/` directory
+- Real-time notifications: Instant delivery of process status and results using Pusher
+- RESTful API: Fast and modern API interface with FastAPI
+- API Security: API key-based authentication
+- Configurable: Flexible configuration with environment variables
+- Docker support: Includes Dockerfile for easy deployment and scaling
 
-## Proje Yapısı
+## Project Structure
 
-Proje yapısı aşağıdaki gibidir:
+The project structure is as follows:
 
 ```
 app/
 ├── files/
-│   └── example.py  # Örnek Python betiği
+│   └── example.py  # Example Python script
 ├── modules/
 │   └── pusher.py
 ├── __init__.py
@@ -35,75 +35,75 @@ app/
 └── LICENSE
 ```
 
-`files/` dizini, çalıştırılacak Python betiklerini içerir. `example.py` dosyası, API'nin nasıl kullanılacağını gösteren bir örnek betik olarak sunulmuştur.
+The `files/` directory contains Python scripts to be executed. The `example.py` file is provided as a sample script to demonstrate how to use the API.
 
-## Kurulum ve Çalıştırma
+## Installation and Running
 
-### Çevresel Değişkenlerin Ayarlanması
+### Setting Up Environment Variables
 
-1. `example.env` dosyasını `.env` olarak kopyalayın:
+1. Copy the `example.env` file to `.env`:
    ```
    cp example.env .env
    ```
-2. `.env` dosyasını açın ve gerekli değişkenleri kendi değerlerinizle güncelleyin.
+2. Open the `.env` file and update the necessary variables with your own values.
 
-### Docker ile Kurulum
+### Installation with Docker
 
-1. Projeyi klonlayın:
+1. Clone the project:
    ```
    git clone <repo-url>
-   cd <proje-dizini>
+   cd <project-directory>
    ```
 
-2. Docker imajını oluşturun:
+2. Build the Docker image:
    ```
-   docker build -t asenkron-python-api .
-   ```
-
-3. Docker konteynerini çalıştırın:
-   ```
-   docker run -p 8000:8000 asenkron-python-api
+   docker build -t asynchronous-python-api .
    ```
 
-### Manuel Kurulum
+3. Run the Docker container:
+   ```
+   docker run -p 8000:8000 remote-async-py-executor
+   ```
 
-1. Gerekli bağımlılıkları yükleyin:
+### Manual Installation
+
+1. Install the required dependencies:
    ```
    pip install -r requirements.txt
    ```
 
-2. Uygulamayı çalıştırın:
+2. Run the application:
    ```
    uvicorn main:app --reload
    ```
 
-## Kullanım
+## Usage
 
-1. Python betiğinizi `files/` dizinine yerleştirin.
-2. API'yi kullanarak betiğinizi çalıştırın (detaylar için `/docs` endpoint'ini ziyaret edin).
-3. Sonuçları Pusher üzerinden gerçek zamanlı olarak alın.
+1. Place your Python script in the `files/` directory.
+2. Use the API to run your script (visit the `/docs` endpoint for details).
+3. Receive results in real-time via Pusher.
 
-Örnek olarak, `files/example.py` dosyasını çalıştırmak için API'yi kullanabilirsiniz.
+As an example, you can use the API to run the `files/example.py` file.
 
-## API Dokümantasyonu
+## API Documentation
 
-API dokümantasyonuna erişmek ve tüm endpoint'leri görmek için:
+To access the API documentation and view all endpoints:
 - Swagger UI: `http://your-domain/docs`
 
-## Pusher Entegrasyonu
+## Pusher Integration
 
-Uygulama, gerçek zamanlı bildirimler için Pusher kullanmaktadır. Pusher ayarlarınızı `.env` dosyasında yapılandırabilirsiniz.
+The application uses Pusher for real-time notifications. You can configure your Pusher settings in the `.env` file.
 
-## Güvenlik
+## Security
 
-- Tüm API istekleri, `X-API-KEY` header'ı ile doğrulanmalıdır.
-- API anahtarınızı güvende tutun ve düzenli olarak değiştirin.
-- `.env` dosyasını asla version control sistemine eklemeyin.
+- All API requests must be authenticated with the `X-API-KEY` header.
+- Keep your API key secure and change it regularly.
+- Never add the `.env` file to version control.
 
-## Katkıda Bulunma
+## Contributing
 
-Hata raporları, özellik istekleri ve pull request'ler için lütfen GitHub üzerinden iletişime geçin.
+For bug reports, feature requests, and pull requests, please contact us via GitHub.
 
-## Lisans
+## License
 
-[MIT Lisansı](LICENSE)
+[MIT License](LICENSE)
