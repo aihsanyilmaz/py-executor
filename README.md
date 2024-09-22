@@ -1,93 +1,94 @@
-# Selenium Service
+# Asenkron Python Çalıştırıcı API
 
-This project provides an infrastructure for running automation tests using a Flask-based API and Selenium Grid. The service includes a Selenium Hub and supports Chrome browsers. You can extend your usage by examining the [flask/packages/example.py](flask/packages/example.py) file.
+Bu FastAPI tabanlı uygulama, dinamik Python kodu yürütme için asenkron bir API sağlar. Uygulama, `files/` dizininde bulunan Python betiklerini çalıştırabilir ve sonuçları asenkron olarak işler. Gerçek zamanlı bildirimler için Pusher entegrasyonu kullanılmıştır, böylece uzun süren işlemlerin ilerlemesi ve sonuçları anında istemcilere iletilebilir.
 
-For the Turkish version of this documentation, please see [README_TR.md](README_TR.md).
+## Temel Özellikler
 
-## Project Structure
+- Asenkron kod yürütme: `asyncio` kullanarak eşzamansız işlem yapabilme
+- Dinamik dosya yükleme: `files/` dizinindeki Python betiklerini çalıştırabilme
+- Gerçek zamanlı bildirimler: Pusher ile işlem durumu ve sonuçlarını anlık iletme
+- RESTful API: FastAPI ile hızlı ve modern bir API arayüzü
+- API Güvenliği: API anahtarı tabanlı kimlik doğrulama
+- Yapılandırılabilir: Çevresel değişkenler ile esnek konfigürasyon
+- Docker desteği: Kolay dağıtım ve ölçeklendirme için Dockerfile içerir
+
+## Proje Yapısı
+
+Proje yapısı aşağıdaki gibidir:
+
 ```
-selenium-service/
-│
-├── flask/ # Flask application
-│ ├── app.py # Main Flask application
-│ ├── run.py # Module managing Selenium operations
-│ ├── fatals.py # Error management module
-│ ├── packages/ # Executable Python scripts
-│ └── README.txt # Flask API usage guide
-├── docker-compose.yml # Docker Compose configuration
-└── .env # Environment variables
+app/
+├── files/
+│   └── example.py  # Örnek Python betiği
+├── main.py
+├── dependencies.py
+├── process.py
+├── execution.log
+├── Dockerfile
+└── README.md
 ```
 
-## Installation
+`files/` dizini, çalıştırılacak Python betiklerini içerir. `example.py` dosyası, API'nin nasıl kullanılacağını gösteren bir örnek betik olarak sunulmuştur.
 
-1. Clone the project:
-   ```
-   git clone https://github.com/aihsanyilmaz/selenium-service.git
-   cd selenium-service
-   ```
+## Kurulum ve Çalıştırma
 
-2. Create the `.env` file and set the necessary variables:
-   ```
-   cp example.env .env
-   ```
-   Edit the `.env` file and enter the required values.
+### Docker ile Kurulum
 
-3. Start the services with Docker Compose:
+1. Projeyi klonlayın:
    ```
-   docker-compose up -d
+   git clone <repo-url>
+   cd <proje-dizini>
    ```
 
-## Usage
+2. Docker imajını oluşturun:
+   ```
+   docker build -t asenkron-python-api .
+   ```
 
-### Flask API
+3. Docker konteynerini çalıştırın:
+   ```
+   docker run -p 8000:8000 asenkron-python-api
+   ```
 
-For detailed information about using the Flask API, please refer to the [Flask API Usage Guide](flask/README.md) file.
+### Manuel Kurulum
 
-### Selenium Grid
+1. Gerekli bağımlılıkları yükleyin:
+   ```
+   pip install -r requirements.txt
+   ```
 
-Selenium Grid runs at `http://localhost:4444`. You can run your Selenium tests using this address.
+2. Uygulamayı çalıştırın:
+   ```
+   uvicorn main:app --reload
+   ```
 
-### Accessing Chrome Nodes via VNC
+## Kullanım
 
-To access Chrome nodes via VNC:
+1. Python betiğinizi `files/` dizinine yerleştirin.
+2. API'yi kullanarak betiğinizi çalıştırın (detaylar için `/docs` endpoint'ini ziyaret edin).
+3. Sonuçları Pusher üzerinden gerçek zamanlı olarak alın.
 
-1. Connect to `localhost:5900`, `localhost:5901`, etc. using a VNC client.
-2. Use "secret" as the password.
+Örnek olarak, `files/example.py` dosyasını çalıştırmak için API'yi kullanabilirsiniz.
 
-Note: The VNC port range is determined by the `VNC_PORT_START` and `VNC_PORT_END` variables in the `.env` file.
+## API Dokümantasyonu
 
-## Configuration
+API dokümantasyonuna erişmek ve tüm endpoint'leri görmek için:
+- Swagger UI: `http://your-domain/docs`
 
-Project configuration is done through the `.env` file. Important configuration variables:
+## Pusher Entegrasyonu
 
-- `CHROME_NODES`: Number of Chrome nodes to be created
-- `VNC_PORT_START` and `VNC_PORT_END`: Port range to be used for VNC ports
-- `PUSHER_*`: Pusher configuration (for real-time notifications)
-- `AUTH_HASH`: Hash used for API authentication
+Uygulama, gerçek zamanlı bildirimler için Pusher kullanmaktadır. Pusher ayarlarınızı `.env` dosyasında yapılandırabilirsiniz.
 
-## Development
+## Güvenlik
 
-To add new packages:
+- Tüm API istekleri, `X-API-KEY` header'ı ile doğrulanmalıdır.
+- API anahtarınızı güvende tutun ve düzenli olarak değiştirin.
+- `.env` dosyasını asla version control sistemine eklemeyin.
 
-1. Create a new Python file under the `flask/packages/` directory.
-2. Define the `boot` function in the file.
-3. Perform the desired operations using Selenium and Pusher functions.
+## Katkıda Bulunma
 
-For an example package, you can look at the `flask/packages/example.py` file.
+Hata raporları, özellik istekleri ve pull request'ler için lütfen GitHub üzerinden iletişime geçin.
 
-## Troubleshooting
+## Lisans
 
-- If you're having trouble starting the services, use the `docker-compose logs` command to check the error messages.
-- If you're having issues with VNC connection, check your firewall settings and make sure the necessary ports are open.
-
-## Contributing
-
-1. Fork this repository
-2. Create a new feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push your branch (`git push origin feature/AmazingFeature`)
-5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+[MIT Lisansı](LICENSE)
