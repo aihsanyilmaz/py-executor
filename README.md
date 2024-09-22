@@ -1,4 +1,4 @@
-# Asynchronous Python Executor API
+# Remote Async Py Executor API
 
 This FastAPI-based application provides an asynchronous API for executing dynamic Python code. The application can run Python scripts located in the `files/` directory and process the results asynchronously. Pusher integration is used for real-time notifications, allowing instant delivery of progress and results of long-running operations to clients.
 
