@@ -2,25 +2,27 @@ version: '3.8'
 
 services:
 
-  selenium-hub:
-    image: selenium/hub:4.10.0
-    container_name: selenium-hub
-    ports:
-      - "4444:4444"
+  #selenium-hub:
+  #  image: selenium/hub:latest
+  #  container_name: selenium-hub
+  #  ports:
+  #    - "4442:4442"
+  #    - "4443:4443"
+  #    - "4444:4444"
 
-  chrome:
-    image: selenium/node-chrome:4.10.0
-    shm_size: 2gb
-    depends_on:
-      - selenium-hub
-    environment:
-      - SE_EVENT_BUS_HOST=selenium-hub
-      - SE_EVENT_BUS_PUBLISH_PORT=4442
-      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-    ports:
-      - "${VNC_PORT_START:-5900}-${VNC_PORT_END:-5999}:5900"
-    deploy:
-      replicas: ${CHROME_NODES:-3}
+  #chrome:
+  #  image: selenium/node-chrome:beta
+  #  shm_size: 2gb
+  #  depends_on:
+  #    - selenium-hub
+  #  environment:
+  #    - SE_EVENT_BUS_HOST=selenium-hub
+  #    - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  #  ports:
+  #    - "${VNC_PORT_START:-5900}-${VNC_PORT_END:-5999}:5900"
+  #  deploy:
+  #    replicas: ${CHROME_NODES:-3}
 
   app:
     build: ./app
