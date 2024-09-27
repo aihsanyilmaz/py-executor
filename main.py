@@ -7,12 +7,12 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 load_dotenv()
 
-from dependencies import get_token_header
+from dependencies import getTokenHeader
 from process import getFilePath, runFile
 
 #
 
-app = FastAPI(dependencies=[Depends(get_token_header)])
+app = FastAPI(dependencies=[Depends(getTokenHeader)])
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,16 +30,15 @@ async def root():
 
 class RunRequest(BaseModel):
     processId: str
-    file: str
-    args: list | None = []
-    kwargs: dict | None = {}
+    package: str
+    args: dict | None = []
 
 @app.post("/run")
 async def run(r: RunRequest, background_tasks: BackgroundTasks):
-    if not os.path.exists(getFilePath(r.file)):
-        raise HTTPException(status_code=404, detail=f"File '{r.file}.py' not found")
+    if not os.path.exists(getFilePath(r.package)):
+        raise HTTPException(status_code=404, detail=f"Package '{r.package}.py' not found")
     
-    background_tasks.add_task(runFile, r.processId, r.file, r.args, r.kwargs)
+    background_tasks.add_task(runFile, r.processId, r.package, r.args, r.kwargs)
 
     return {"status": "started"}
 #
