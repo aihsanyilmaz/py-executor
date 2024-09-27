@@ -3,4 +3,5 @@ uvicorn
 requests
 pusher
 selenium
+pyppeteer
 python-dotenv
