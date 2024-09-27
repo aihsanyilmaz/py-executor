@@ -10,7 +10,7 @@ if not API_KEY:
 
 apiKeyHeader = APIKeyHeader(name="X-API-KEY")
 
-async def get_token_header(apiKey: Annotated[str, Header(alias="X-API-KEY")]):
+async def getTokenHeader(apiKey: Annotated[str, Header(alias="X-API-KEY")]):
     if apiKey != API_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

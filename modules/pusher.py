@@ -19,4 +19,3 @@ def pusher(channel, event, data):
     except Exception as e:
         print(f"Pusher event trigger error: {str(e)}")
         return False
-

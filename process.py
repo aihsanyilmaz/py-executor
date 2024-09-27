@@ -1,35 +1,19 @@
-import os, importlib.util, inspect, time
+import os, importlib.util, inspect, traceback, time
 from datetime import datetime
 from modules.pusher import pusher
 
-FILES_FOLDER = os.path.join(os.getcwd(), "files")
+PACKAGE_FOLDER = os.path.join(os.getcwd(), "packages")
 
-def getFilePath(file: str) -> str:
-    return os.path.join(FILES_FOLDER, f"{file}.py")
-
-def logExecution(status: bool, executionTime: float, processId: str, file: str, args: list, kwargs: dict):
-    LOG_FILE = os.path.join(os.getcwd(), "execution.log")
-    with open(LOG_FILE, "a") as f:
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        if(status == True):
-            prefix = f"Execution: {executionTime:.2f} sec"
-        else:
-            prefix = "STATUS: FALSE"
-
-        log_entry = f"{timestamp} - {prefix} - File: {file} - ProcessId: {processId} - Args: {args} - Kwargs: {kwargs}\n"
-        f.write(log_entry)
-
-async def runFile(processId: str, file: str, args: list, kwargs: dict):
+async def packageRun(processId: str, p: str, args: dict):
+    status = True
     try:
-        status = True
         startTime = time.time()
+        path = getPackagePath(p)
         
-        filePath = getFilePath(file)
-        
-        if not os.path.exists(filePath):
+        if not os.path.exists(path):
             status = False
 
-        spec = importlib.util.spec_from_file_location(file, filePath)
+        spec = importlib.util.spec_from_file_location(p, path)
         if spec is None:
             status = False
 
@@ -48,14 +32,32 @@ async def runFile(processId: str, file: str, args: list, kwargs: dict):
         if status:
             module.pusher = lambda channel, event, data: pusher(channel, event, data)
             if inspect.iscoroutinefunction(module.main):
-                await module.main(processId, *args, **kwargs)
+                await module.main(processId, **args)
             else:
-                module.main(processId, *args, **kwargs)
-
-        executionTime = time.time() - startTime            
-        logExecution(status, executionTime, processId, file, args, kwargs)
+                module.main(processId, **args)
 
     except Exception:
+        with open("process.failed.log", "w") as fi:
+            error_message = f"Error in packageRun: {str(e)}\n{traceback.format_exc()}"
+            fi.write(f"Error details:\n{error_message}\n")
         return False
 
-    return True
+    executionTime = time.time() - startTime            
+    logExecution(status, executionTime, processId, p, args)
+
+    return status
+
+def getPackagePath(file: str) -> str:
+    return os.path.join(PACKAGE_FOLDER, f"{file}.py")
+
+def logExecution(status: bool, executionTime: float, processId: str, package: str, args: dict):
+    LOG_FILE = os.path.join(os.getcwd(), "execution.log")
+    with open(LOG_FILE, "a") as f:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        if(status == True):
+            prefix = f"Execution: {executionTime:.2f} sec"
+        else:
+            prefix = "STATUS: FALSE"
+
+        log_entry = f"{timestamp} - {prefix} - Package: {package} - ProcessId: {processId} - Args: {args}\n"
+        f.write(log_entry)
