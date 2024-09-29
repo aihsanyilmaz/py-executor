@@ -5,5 +5,6 @@ async def run(args):
     text = f"Query received: {query}"
 
     await asyncio.sleep(5)
-    
+
+    # log function accepts str, int, list or dict
     log(text)

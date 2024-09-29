@@ -11,14 +11,16 @@ from typing import Optional, Union
 from dependencies import getTokenHeader
 from modules.logger import configureModuleLogger
 from modules.pusher import pusher
+#
 
 app = FastAPI(dependencies=[Depends(getTokenHeader)])
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["http://localhost:8000", "https://yourdomain.com"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"], # GET, POST, PUT, DELETE
+    allow_headers=["X-API-KEY", "Content-Type"],
 )
 #
 

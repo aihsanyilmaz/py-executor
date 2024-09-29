@@ -17,4 +17,3 @@ async def getTokenHeader(apiKey: Annotated[str, Header(alias="X-API-KEY")]):
             detail="Invalid Api Key",
             headers={"WWW-Authenticate": "API-KEY"},
         )
-    return True
